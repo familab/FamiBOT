@@ -12,6 +12,7 @@
     "hubot-help": "^0.1.1",
     "hubot-heroku-keepalive": "0.0.4",
     "hubot-maps": "0.0.2",
+    "hubot-motivate": "^3.0.0",
     "hubot-plusplus": "^1.1.5",
     "hubot-pugme": "^0.1.0",
     "hubot-redis-brain": "0.0.3",
