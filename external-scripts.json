@@ -12,5 +12,6 @@
   "hubot-plusplus",
   "hubot-motivate",
   "hubot-calculator",
-  "hubot-business-cat"
+  "hubot-business-cat",
+  "hubot-mute"
 ]
