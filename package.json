@@ -23,6 +23,7 @@
     "hubot-scripts": "^2.16.1",
     "hubot-shipit": "^0.2.0",
     "hubot-slack": "^3.3.0",
+    "hubot-tell": "^1.2.4",
     "newrelic": "^1.21.1"
   },
   "engines": {
