@@ -14,5 +14,6 @@
   "hubot-calculator",
   "hubot-business-cat",
   "hubot-mute",
-  "hubot-tell"
+  "hubot-tell",
+  "hubot-seen"
 ]
