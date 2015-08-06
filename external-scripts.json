@@ -10,5 +10,7 @@
   "hubot-rules",
   "hubot-shipit",
   "hubot-plusplus",
-  "hubot-motivate"
+  "hubot-motivate",
+  "hubot-calculator",
+  "hubot-business-cat"
 ]
