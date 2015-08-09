@@ -42,15 +42,14 @@
 # Commands:
 #   hubot !dumb <phrase or body of text>
 #   hubot !rmdumb <dumb ID> [seriously]
-#   hubot !dumbmatch [<dumb ID OR partial text OR regular expression>]
-#   hubot !dumbsearch <partial text OR regular expression>
+#   hubot !randdumb [<dumb ID OR partial text OR regular expression>]
+#   hubot !searchdumb <partial text OR regular expression>
 #   hubot !purgealldumbs [seriously]
 #
 # Author:
 #   johnwyles (although some of this is based on NNA's talkative.coffee)
 
 module.exports = (robot) ->
-
   # The maximum number of dumbs output for a search
   maximum_dumbs_output = 3
 
@@ -66,9 +65,7 @@ module.exports = (robot) ->
     "purgealldumbs": false
   }
 
-  robot.brain.on 'loaded', =>
-    robot.brain.data.dumb_database ?= {}
-    robot.brain.data.dumb_database = default_dumb_database if robot.brain.data.dumb_database is undefined
+  robot.brain.data.dumb_database or= default_dumb_database
 
   robot.respond /!dumb\s?(.*)?$/i, (msg) ->
     if msg.match[1]
@@ -100,7 +97,7 @@ module.exports = (robot) ->
     else
       msg.send "You must supply a ID number after '!rmdumb'.  For example: 'rmdumb 123'."
 
-  robot.respond /!dumbmatch\s?(?: (\d+)|\s(.*))?$/i, (msg) ->
+  robot.respond /!randdumb\s?(?: (\d+)|\s(.*))?$/i, (msg) ->
     dumb_database = robot.brain.data.dumb_database
 
     # Find a random dumb
@@ -136,7 +133,7 @@ module.exports = (robot) ->
       else if dumb_found_count < 1
         msg.send "There were no matching dumb ideas found [Pattern: #{msg.match[2]}]."
 
-  robot.respond /!dumbsearch\s?(.*)?$/i, (msg) ->
+  robot.respond /!searchdumb\s?(.*)?$/i, (msg) ->
     # Find all dumbs by a pattern
     if msg.match[1]
       dumb_found = false
