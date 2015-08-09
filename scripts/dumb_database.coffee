@@ -65,7 +65,7 @@ module.exports = (robot) ->
     "purgealldumbs": false
   }
 
-  robot.brain.data.dumb_database = default_dumb_database
+  robot.brain.data.dumb_database or= default_dumb_database
 
   robot.respond /!dumb\s?(.*)?$/i, (msg) ->
     if msg.match[1]
