@@ -1,10 +1,12 @@
 {
   "name": "FamiBOT",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "author": "Lance Hudson <lance@familab.org>",
   "description": "A bot for FamiLAB Slack",
   "dependencies": {
+    "redis": "~0.12.1",
+    "connect": "~2.25.7",
     "hubot": "^2.13.2",
     "hubot-business-cat": "^1.2.3",
     "hubot-calculator": "^0.4.0",
@@ -28,6 +30,6 @@
     "newrelic": "^1.21.1"
   },
   "engines": {
-    "node": "0.10.x"
+    "node": "0.10.25"
   }
 }
