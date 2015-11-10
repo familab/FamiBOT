@@ -18,7 +18,7 @@ thecoin = ["heads", "tails"]
 
 module.exports = (robot) ->
   robot.respond /(coinflip|flip a coin)/i, (msg) ->
-    msg.reply msg.random thecoin
+    msg.reply msg.random(thecoin)
 
 module.exports = (robot) ->
   robot.respond /^pick\s*(\w+)\s+(\w+)/ig, (msg) ->
