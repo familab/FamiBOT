@@ -23,7 +23,7 @@ module.exports = (robot) ->
 module.exports = (robot) ->
   robot.respond /^pick\s*(\w+)\s+(\w+)/ig, (msg) ->
     options = [
-      msg.match[1]
+      msg.match[1],
       msg.match[2]
     ]
     msg.reply msg.random options
