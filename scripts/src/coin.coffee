@@ -1,4 +1,4 @@
-# Description:
+cription:
 #   Help decide between two things
 #
 # Dependencies:
@@ -16,5 +16,5 @@
 thecoin = ["heads", "tails"]
 
 module.exports = (robot) ->
-  robot.respond /(coinflip|flip a coin)/i, (msg) ->
+  robot.respond /(throw|flip|toss) a coin/i, (msg) ->
     msg.reply msg.random thecoin

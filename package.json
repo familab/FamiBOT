@@ -5,9 +5,9 @@
   "author": "Lance Hudson <lance@familab.org>",
   "description": "A bot for FamiLAB Slack",
   "dependencies": {
-    "redis": "~0.12.1",
     "connect": "~2.25.7",
     "hubot": "^2.13.2",
+    "hubot-4chan": "0.0.1",
     "hubot-business-cat": "^1.2.3",
     "hubot-calculator": "^0.4.0",
     "hubot-diagnostics": "0.0.1",
@@ -27,7 +27,8 @@
     "hubot-shipit": "^0.2.0",
     "hubot-slack": "^3.3.0",
     "hubot-tell": "^1.2.4",
-    "newrelic": "^1.21.1"
+    "newrelic": "^1.21.1",
+    "redis": "~0.12.1"
   },
   "engines": {
     "node": "0.10.25"
