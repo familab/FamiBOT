@@ -14,6 +14,8 @@ has, etc!
 
 ### Running FamiBOT Locally
 
+See [Running testFamibot Locally] for a docker implementation that may make life easier.
+
 You can test your hubot by running the following, however some plugins will not
 behave as expected unless the [environment variables](#configuration) they rely
 upon have been set.
@@ -33,6 +35,15 @@ Then you can interact with FamiBOT by typing `FamiBOT help`.
     FamiBOT animate me <query> - The same thing as `image me`, except adds [snip]
     FamiBOT help - Displays all of the help commands that FamiBOT knows about.
     ...
+
+### Running testFamibot Locally
+
+Assumes you can docker the things. Nab a slack token for testfamibot from [https://familab.slack.com/apps/A0F7XDU93-hubot?page=1] 
+
+`docker build -t alpine-hubot .` builds using the Dockerfile.
+`docker run --name testfamibot -e HUBOT_SLACK_TOKEN=$SLACK_API_TOKEN -p 80:80 -d alpine-hubot` Use the slack token here to get it running. It's polite to make sure nobody else is testing. Not sure what happens when you run two...
+
+read your logs: `docker logs testfamibot`
 
 ### Configuration
 

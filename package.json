@@ -6,7 +6,7 @@
   "description": "A bot for FamiLAB Slack",
   "dependencies": {
     "hubot": "^3.0.1",
-    "hubot-4chan": "0.0.2",
+    "hubot-4chan": "0.0.1",
     "hubot-business-cat": "^1.5.13",
     "hubot-calculator": "^0.4.0",
     "hubot-diagnostics": "^1.0.0",
@@ -27,6 +27,7 @@
     "hubot-slack": "^4.4.0",
     "hubot-tell": "^1.2.4",
     "newrelic": "^1.21.1",
+    "npm": "^5.8.0",
     "redis": "^2.7.1"
   },
   "engines": {
