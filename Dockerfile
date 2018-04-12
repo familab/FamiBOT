@@ -27,10 +27,9 @@ WORKDIR /hubot
 RUN yo hubot --owner="Craig/FamiLab" --name="testfamibot" --description="tesing is good, right?" --defaults
 COPY package.json package.json
 RUN npm install
-ADD hubot-scripts.json hubot-scripts.json
 ADD external-scripts.json external-scripts.json
 
-EXPOSE 80
+EXPOSE 8080
 
 # And go
 ENTRYPOINT ["/bin/sh", "-c", "bin/hubot --adapter slack"]

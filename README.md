@@ -12,7 +12,7 @@ has, etc!
 [hubot]: http://hubot.github.com
 [generator-hubot]: https://github.com/github/generator-hubot
 
-### Running FamiBOT Locally
+## Running FamiBOT Locally
 
 See [Running testFamibot Locally] for a docker implementation that may make life easier.
 
@@ -36,16 +36,18 @@ Then you can interact with FamiBOT by typing `FamiBOT help`.
     FamiBOT help - Displays all of the help commands that FamiBOT knows about.
     ...
 
-### Running testFamibot Locally
+## Docker testFamibot
 
-Assumes you can docker the things. Nab a slack token for testfamibot from [https://familab.slack.com/apps/A0F7XDU93-hubot?page=1] 
+Assumes you can docker the things. Nab a slack token for testfamibot from [slack hubot integration link](https://familab.slack.com/apps/A0F7XDU93-hubot?page=1)
 
 `docker build -t alpine-hubot .` builds using the Dockerfile.
-`docker run --name testfamibot -e HUBOT_SLACK_TOKEN=$SLACK_API_TOKEN -p 80:80 -d alpine-hubot` Use the slack token here to get it running. It's polite to make sure nobody else is testing. Not sure what happens when you run two...
+
+Use the slack token here to get it running. It's polite to make sure nobody else is testing. Not sure what happens when you run two...
+`docker run --name testfamibot -e HUBOT_SLACK_TOKEN=$SLACK_API_TOKEN -e HUBOT_HEROKU_KEEPALIVE_URL=http://localhost:8080/ -p 80:80 -d alpine-hubot`
 
 read your logs: `docker logs testfamibot`
 
-### Configuration
+## Configuration
 
 A few scripts (including some installed by default) require environment
 variables to be set as a simple form of configuration.
@@ -65,7 +67,7 @@ How to set environment variables will be specific to your operating system.
 Rather than recreate the various methods and best practices in achieving this,
 it's suggested that you search for a dedicated guide focused on your OS.
 
-### Scripting
+## Scripting
 
 An example script is included at `scripts/example.coffee`, so check it out to
 get started, along with the [Scripting Guide](scripting-docs).
@@ -75,7 +77,7 @@ the thing.
 
 [scripting-docs]: https://github.com/github/hubot/blob/master/docs/scripting.md
 
-### external-scripts
+## external-scripts
 
 There will inevitably be functionality that everyone will want. Instead of
 writing it yourself, you can use existing plugins.
@@ -89,7 +91,6 @@ available hubot plugins on [npmjs.com](npmjs) or by using `npm search`:
     hubot-pandapanda a hubot script for panda responses =missu 2014-11-30 0.9.2   hubot hubot-scripts panda
     ...
 
-
 To use a package, check the package's documentation, but in general it is:
 
 1. Use `npm install --save` to add the package to `package.json` and install it
@@ -97,7 +98,7 @@ To use a package, check the package's documentation, but in general it is:
 
 You can review `external-scripts.json` to see what is included by default.
 
-##### Advanced Usage
+## Advanced Usage
 
 It is also possible to define `external-scripts.json` as an object to
 explicitly specify which scripts from a package should be included. The example
@@ -119,7 +120,7 @@ to including all scripts.**
 
 [npmjs]: https://www.npmjs.com
 
-### hubot-scripts
+## hubot-scripts
 
 Before hubot plugin packages were adopted, most plugins were held in the
 [hubot-scripts][hubot-scripts] package. Some of these plugins have yet to be
@@ -132,7 +133,7 @@ repo.
 
 [hubot-scripts]: https://github.com/github/hubot-scripts
 
-##  Persistence
+## Persistence
 
 If you are going to use the `hubot-redis-brain` package (strongly suggested),
 you will need to add the Redis to Go addon on Heroku which requires a verified
