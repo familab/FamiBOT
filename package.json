@@ -5,34 +5,28 @@
   "author": "Lance Hudson <lance@familab.org>",
   "description": "A bot for FamiLAB Slack",
   "dependencies": {
-    "hubot": "^2.19.0",
-    "hubot-4chan": "0.0.1",
+    "hubot": "^3.0.1",
     "hubot-business-cat": "^1.5.13",
     "hubot-calculator": "^0.4.0",
     "hubot-coin": "^0.0.2",
     "hubot-diagnostics": "^1.0.0",
     "hubot-dogeme": "^1.0.0",
-    "hubot-github-identity": "^0.10.0",
-    "hubot-google-images": "^0.2.7",
-    "hubot-google-translate": "^0.2.1",
     "hubot-help": "^1.0.1",
-    "hubot-heroku-keepalive": "1.0.3",
-    "hubot-maps": "0.0.3",
+    "hubot-heroku-keepalive": "^1.0.3",
+    "hubot-markov": "~2.0.0",
     "hubot-motivate": "^3.0.0",
-    "hubot-mute": "0.0.9",
+    "hubot-mute": "^0.0.9",
     "hubot-plusplus": "^1.4.0",
-    "hubot-pugme": "0.1.1",
-    "hubot-redis-brain": "^1.0.0",
+    "hubot-pugme": "^0.1.1",
     "hubot-rules": "^0.1.2",
     "hubot-scripts": "^2.17.2",
     "hubot-seen": "^1.0.1",
     "hubot-shipit": "^0.2.1",
-    "hubot-slack": "^4.4.0",
+    "hubot-slack": "^4.5.3",
     "hubot-tell": "^1.2.4",
-    "newrelic": "^1.21.1",
     "redis": "^2.7.1"
   },
   "engines": {
-    "node": "8.11.1"
+    "node": "^8.11.3"
   }
 }
