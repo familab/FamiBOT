@@ -5,28 +5,34 @@
   "author": "Lance Hudson <lance@familab.org>",
   "description": "A bot for FamiLAB Slack",
   "dependencies": {
-    "hubot": "^3.0.1",
+    "hubot": "^3.3.2",
     "hubot-business-cat": "^1.5.13",
     "hubot-calculator": "^0.4.0",
     "hubot-coin": "^0.0.2",
     "hubot-diagnostics": "^1.0.0",
     "hubot-dogeme": "^1.0.0",
+    "hubot-google-translate": "^0.2.1",
     "hubot-help": "^1.0.1",
     "hubot-heroku-keepalive": "^1.0.3",
+    "hubot-maps": "0.0.3",
     "hubot-markov": "~2.0.0",
     "hubot-motivate": "^3.0.0",
     "hubot-mute": "^0.0.9",
     "hubot-plusplus": "^1.4.0",
     "hubot-pugme": "^0.1.1",
+    "hubot-redis-brain": "^1.0.0",
     "hubot-rules": "^0.1.2",
     "hubot-scripts": "^2.17.2",
     "hubot-seen": "^1.0.1",
     "hubot-shipit": "^0.2.1",
-    "hubot-slack": "^4.5.3",
+    "hubot-slack": "^4.7.1",
     "hubot-tell": "^1.2.4",
     "redis": "^2.7.1"
   },
   "engines": {
-    "node": "^8.11.3"
+    "node": "10.16.3"
+  },
+  "devDependencies": {
+    "eslint": "^6.4.0"
   }
 }
