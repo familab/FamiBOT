@@ -8,7 +8,7 @@ const badger = [
   'badger badger badger snek! Snek!',
   'Capt Badger reporting for snek!',
   'Honey badgers are my fav',
-  `Not only is its skin tough, it's loose enough that a honey badger can turn around in it and bite its attacker. 
+  `Honey badger! Not only is its skin tough, it's loose enough that a honey badger can turn around in it and bite its attacker. 
    And speaking of bites, the honey badger can survive the bites of some very dangerous creatures. 
    They eat scorpions and snakes, and they have an unusually strong immunity to venom.`,
   'Honey badgers get their name from their penchant for raiding beehives',
