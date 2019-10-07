@@ -71,6 +71,11 @@ module.exports = (robot) => {
     res.send('OK');
   });
 
+  robot.router.post('/famibot/scores/heroku/keepalive', (req, res) => {
+    robot.logger.info(`got ping from ${req} sending pong`);
+    res.send('PONG');
+  });
+
   // error handling
   robot.error((err, msg) => {
     msg.send('I experienced an error. Someone should investigate');
