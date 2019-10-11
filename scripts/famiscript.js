@@ -66,7 +66,7 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+)$/i, (msg) => {
     const user = msg.message.user;
     for (let i = 0; i < msg.match[1]; i++) {
-      const rand = Math.round((Math.random() * 60000) + 60000);
+      const rand = Math.round(Math.random() * 30000);
       setTimeout(() => {
         msg.send(`https://cataas.com/cat/gif?${uuidv1()}`);
       }, rand);
