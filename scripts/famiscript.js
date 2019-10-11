@@ -59,7 +59,7 @@ module.exports = (robot) => {
     robot.logger.info(`${user.name} was heard saying ${msg.message.text}`);
   });
 
-  robot.hear(/^catbomb (d+) (.*)/i, (msg) => {
+  robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
     for (let i = 0; i < msg.match[1]; i++) {
       if (msg.match[2]) {
