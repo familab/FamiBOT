@@ -1,6 +1,7 @@
 
 /* eslint-disable no-unused-expressions */
 /* eslint-disable strict */
+const uuidv1 = require('uuid/v1');
 
 const badger = [
   'Badgers? Honey badgers are the best',
@@ -31,7 +32,7 @@ const badger = [
 module.exports = (robot) => {
   // badger badger badger
   robot.hear(/badger/i, (msg) => {
-    const rand = Math.round(Math.random() * 60000);
+    const rand = Math.round(Math.random() * 600000);
     const totalBadgers = robot.brain.get('totalBadgers') + 1;
     robot.brain.set('totalBadgers', totalBadgers);
     setTimeout(() => {
@@ -50,12 +51,37 @@ module.exports = (robot) => {
 
   // agree with awesome
   robot.hear(/^(.*) (is|are|seems) awesome/i, (msg) => {
-    const rand = Math.round(Math.random() * 60000);
+    const rand = Math.round(Math.random() * 120000);
     const user = msg.message.user;
     setTimeout(() => {
       msg.send(`After careful consideration, I think that ${msg.match[1]} ${msg.match[2]} awesome too`);
     }, rand);
     robot.logger.info(`${user.name} was heard saying ${msg.message.text}`);
+  });
+
+  robot.hear(/^catbomb (d+) (.*)/i, (msg) => {
+    const user = msg.message.user;
+    for (let i = 0; i < msg.match[1]; i++) {
+      if (msg.match[2]) {
+        msg.send(`https://cataas.com/cat/says/${msg.match[2]}`);
+      } else {
+        msg.send(`https://cataas.com/cat/gif?${uuidv1()}`);
+      }
+    }
+    robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
+  });
+
+  robot.hear(/^catbomb info/i, (msg) => {
+    const user = msg.message.user;
+    msg.send(`
+      Usage: catbomb <number> <optional saying>
+      Info: Gets cats from https://cataas.com/cat/gif and meow bombs the chan.
+      If there is a saying then uses static images with text on them.
+      If not then it returns gifs ftw.
+      Submit meow cats https://cataas.com
+      Enjoy
+    `);
+    robot.logger.info(`${user.name} catbomb info ${msg.message.text}`);
   });
 
   // point out topic changes

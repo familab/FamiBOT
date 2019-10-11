@@ -9,6 +9,7 @@
     "hubot-business-cat": "1.5.13",
     "hubot-calculator": "0.4.0",
     "hubot-coin": "0.0.2",
+    "hubot-darts": "1.0.4",
     "hubot-diagnostics": "1.0.0",
     "hubot-dogeme": "1.0.0",
     "hubot-google-translate": "0.2.1",
@@ -28,6 +29,7 @@
     "hubot-slack": "4.7.1",
     "hubot-tell": "1.2.4",
     "redis": "2.7.1",
+    "uuid": "3.3.3",
     "ws": ">=3.3.1"
   },
   "devDependencies": {
@@ -42,8 +44,9 @@
     "nodemon": "^1.19.3"
   },
   "scripts": {
-    "lint": "eslint . --fix --cache",
+    "build": "echo Ok done",
     "dev": "bash ./bin/dev.sh",
+    "lint": "eslint . --fix --cache",
     "test": "mocha tests --colors --diff --check-leaks"
   },
   "husky": {
