@@ -109,7 +109,7 @@ module.exports = (robot) => {
   });
 
   robot.hear(/^dump redis$/i, (msg) => {
-    client.keys('*', (err, keys) => {
+    client.keys('hubot:storage:*', (err, keys) => {
       if (err) {
         msg.send('Error encountered with that redis thingy');
         robot.logger.info(`ERROR: ${err}`);
