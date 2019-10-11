@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable strict */
 const uuidv1 = require('uuid/v1');
-const redis = require("redis");
+const redis = require('redis');
 
 const redisUrl = process.env.REDISTOGO_URL || 'redis://127.0.0.1:6379';
 const client = redis.createClient(redisUrl);
@@ -66,7 +66,10 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+)$/i, (msg) => {
     const user = msg.message.user;
     for (let i = 0; i < msg.match[1]; i++) {
-      msg.send(`https://cataas.com/cat/gif?${uuidv1()}`);
+      const rand = Math.round(Math.random() * 3000);
+      setTimeout(() => {
+        msg.send(`https://cataas.com/cat/gif?${uuidv1()}`);
+      }, rand);
     }
     robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
   });
@@ -74,7 +77,10 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
     for (let i = 0; i < msg.match[1]; i++) {
-      msg.send(`https://cataas.com/cat/say/${encodeURI(msg.match[2])}`);
+      const rand = Math.round(Math.random() * 3000);
+      setTimeout(() => {
+        msg.send(`https://cataas.com/cat/say/${encodeURI(msg.match[2])}`);
+      }, rand);
     }
     robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
   });
