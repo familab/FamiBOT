@@ -22,4 +22,4 @@ EXPOSE 8080
 RUN pwd
 RUN ls -lah bin
 # And go
-ENTRYPOINT ["bin/hubot", "--adapter slack"]
+ENTRYPOINT ["bin/hubot", "--adapter slack", "--name \"FamiBOT\", "-l" "--alias \"Jarvis\""]
