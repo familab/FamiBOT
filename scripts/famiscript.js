@@ -66,7 +66,7 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+)$/i, (msg) => {
     const user = msg.message.user;
     for (let i = 0; i < msg.match[1]; i++) {
-      const rand = Math.round(Math.random() * 3000);
+      const rand = Math.round(Math.random() * 15000);
       setTimeout(() => {
         msg.send(`https://cataas.com/cat/gif?${uuidv1()}`);
       }, rand);
@@ -77,9 +77,9 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
     for (let i = 0; i < msg.match[1]; i++) {
-      const rand = Math.round(Math.random() * 3000);
+      const rand = Math.round(Math.random() * 15000);
       setTimeout(() => {
-        msg.send(`https://cataas.com/cat/say/${encodeURI(msg.match[2])}`);
+        msg.send(`https://cataas.com/cat/says/${encodeURI(msg.match[2])}`);
       }, rand);
     }
     robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
