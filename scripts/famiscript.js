@@ -2,6 +2,10 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable strict */
 const uuidv1 = require('uuid/v1');
+const redis = require("redis");
+
+const redisUrl = process.env.REDISTOGO_URL || 'redis://127.0.0.1:6379';
+const client = redis.createClient(redisUrl);
 
 const badger = [
   'Badgers? Honey badgers are the best',
@@ -59,14 +63,18 @@ module.exports = (robot) => {
     robot.logger.info(`${user.name} was heard saying ${msg.message.text}`);
   });
 
+  robot.hear(/^catbomb (\d+)$/i, (msg) => {
+    const user = msg.message.user;
+    for (let i = 0; i < msg.match[1]; i++) {
+      msg.send(`https://cataas.com/cat/gif?${uuidv1()}`);
+    }
+    robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
+  });
+
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
     for (let i = 0; i < msg.match[1]; i++) {
-      if (msg.match[2]) {
-        msg.send(`https://cataas.com/cat/says/${msg.match[2]}`);
-      } else {
-        msg.send(`https://cataas.com/cat/gif?${uuidv1()}`);
-      }
+      msg.send(`https://cataas.com/cat/say/${encodeURI(msg.match[2])}`);
     }
     robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
   });
@@ -87,6 +95,26 @@ module.exports = (robot) => {
   // point out topic changes
   robot.topic((msg) => {
     msg.send(`${msg.message.text}? TOPIC CHANGE! I'm telling!`);
+  });
+
+  // redis
+  robot.hear(/^redis server info$/i, (msg) => {
+    msg.send(client.server_info);
+  });
+
+  robot.hear(/^dump redis$/i, (msg) => {
+    client.keys('*', (err, keys) => {
+      if (err) {
+        msg.send('Error encountered with that redis thingy');
+        robot.logger.info(`ERROR: ${err}`);
+      }
+
+      msg.send('----dump redis----');
+      for (let i = 0, len = keys.length; i < len; i++) {
+        msg.send(keys[i]);
+      }
+      msg.send('----end dump redis----');
+    });
   });
 
   robot.router.post('/famibot/test/:message', (req, res) => {
