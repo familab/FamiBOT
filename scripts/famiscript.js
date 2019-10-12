@@ -67,7 +67,7 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+)$/i, (msg) => {
     const user = msg.message.user;
 
-    if (msg.match[1] > 19) { 
+    if (msg.match[1] > 19) {
       msg.match[1] = 19;
       msg.send('Thanks to Kyle, catbombs are limited to 20 at a time. Enjoy');
     }
@@ -84,7 +84,7 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
 
-    if (msg.match[1] > 19) { 
+    if (msg.match[1] > 19) {
       msg.match[1] = 19;
       msg.send('Thanks to Kyle, catbombs are limited to 20 at a time. Enjoy');
     }
@@ -101,7 +101,7 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
 
-    if (msg.match[1] > 19) { 
+    if (msg.match[1] > 19) {
       msg.match[1] = 19;
       msg.send('Thanks to Kyle, catbombs are limited to 20 at a time. Enjoy');
     }
@@ -132,7 +132,7 @@ module.exports = (robot) => {
         .catch(err => msg.reply(`error in 'nasa apod' ${err}`));
     });
 
-    robot.logger.info(`${user.name} catbomb info ${msg.message.text}`);
+    robot.logger.info(`${user.name} nasa info ${msg.message.text}`);
   });
 
   // point out topic changes
