@@ -125,7 +125,12 @@ module.exports = (robot) => {
     new Promise((resolve, reject) => {
       robot.http(`https://api.nasa.gov/planetary/apod?api_key=${apiKey}`)
         .get((err, _response, body) => {
-          err ? reject(err) : resolve(body);
+          if (err) {
+            robot.logger.info(`http get error ${err}`)
+            reject(err);
+          } else {
+            resolve(body);
+          }
         })
         .then(body => JSON.parse(body))
         .then(body => robot.logger.info(`got json body ${body}`))
