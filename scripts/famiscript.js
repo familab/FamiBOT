@@ -3,6 +3,7 @@
 /* eslint-disable strict */
 const uuidv1 = require('uuid/v1');
 const redis = require('redis');
+const decode = require('decode-html');
 
 const redisUrl = process.env.REDISTOGO_URL || 'redis://127.0.0.1:6379';
 const client = redis.createClient(redisUrl);
@@ -65,6 +66,12 @@ module.exports = (robot) => {
 
   robot.hear(/^catbomb (\d+)$/i, (msg) => {
     const user = msg.message.user;
+
+    if (msg.match[1] > 19) { 
+      msg.match[1] = 19;
+      msg.send('Thanks to Kyle, catbombs are limited to 20 at a time. Enjoy');
+    }
+
     for (let i = 0; i < msg.match[1]; i++) {
       const rand = Math.round(Math.random() * 30000);
       setTimeout(() => {
@@ -76,6 +83,12 @@ module.exports = (robot) => {
 
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
+
+    if (msg.match[1] > 19) { 
+      msg.match[1] = 19;
+      msg.send('Thanks to Kyle, catbombs are limited to 20 at a time. Enjoy');
+    }
+
     for (let i = 0; i < msg.match[1]; i++) {
       const rand = Math.round(Math.random() * 15000);
       setTimeout(() => {
@@ -85,16 +98,40 @@ module.exports = (robot) => {
     robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
   });
 
-  robot.hear(/^catbomb info/i, (msg) => {
+  robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
-    msg.send(`
-      Usage: catbomb <number> <optional saying>
-      Info: Gets cats from https://cataas.com/cat/gif and meow bombs the chan.
-      If there is a saying then uses static images with text on them.
-      If not then it returns gifs ftw.
-      Submit meow cats https://cataas.com
-      Enjoy
-    `);
+
+    if (msg.match[1] > 19) { 
+      msg.match[1] = 19;
+      msg.send('Thanks to Kyle, catbombs are limited to 20 at a time. Enjoy');
+    }
+
+    for (let i = 0; i < msg.match[1]; i++) {
+      const rand = Math.round(Math.random() * 15000);
+      setTimeout(() => {
+        msg.send(`https://cataas.com/cat/says/${encodeURI(msg.match[2])}?${uuidv1()}`);
+      }, rand);
+    }
+    robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
+  });
+
+  robot.hear(/^nasa apod$/i, (msg) => {
+    const user = msg.message.user;
+
+    // eslint-disable-next-line no-new
+    new Promise((resolve, reject) => {
+      robot.http(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`)
+        .get((err, _response, body) => {
+          err ? reject(err) : resolve(body);
+        })
+        .then(body => JSON.parse(body))
+        .then(json => decode(json.value.explanation))
+        .then(explanation => msg.send(explanation))
+        .then(json => decode(json.value.hdurl))
+        .then(hdurl => msg.send(hdurl))
+        .catch(err => msg.reply(`error in 'nasa apod' ${err}`));
+    });
+
     robot.logger.info(`${user.name} catbomb info ${msg.message.text}`);
   });
 

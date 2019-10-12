@@ -5,6 +5,7 @@
   "author": "Lance Hudson <lance@familab.org>",
   "description": "A bot for FamiLAB Slack",
   "dependencies": {
+    "decode-html": "^2.0.0",
     "hubot": "3.3.2",
     "hubot-business-cat": "1.5.13",
     "hubot-calculator": "0.4.0",
