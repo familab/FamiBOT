@@ -117,14 +117,18 @@ module.exports = (robot) => {
 
   robot.hear(/^nasa apod$/i, (msg) => {
     const user = msg.message.user;
+    const apiKey = process.env.NASA_API_KEY;
+
+    robot.logger.info(`got nasa apiKey ${apiKey}`);
 
     // eslint-disable-next-line no-new
     new Promise((resolve, reject) => {
-      robot.http(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`)
+      robot.http(`https://api.nasa.gov/planetary/apod?api_key=${apiKey}`)
         .get((err, _response, body) => {
           err ? reject(err) : resolve(body);
         })
         .then(body => JSON.parse(body))
+        .then(body => robot.logger.info(`got json body ${body}`))
         .then(json => decode(json.value.explanation))
         .then(explanation => msg.send(explanation))
         .then(json => decode(json.value.hdurl))
