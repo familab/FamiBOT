@@ -67,7 +67,7 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+)$/i, (msg) => {
     const user = msg.message.user;
 
-    if (msg.match[1] > 19) { 
+    if (msg.match[1] > 19) {
       msg.match[1] = 19;
       msg.send('Thanks to Kyle, catbombs are limited to 20 at a time. Enjoy');
     }
@@ -84,7 +84,7 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
 
-    if (msg.match[1] > 19) { 
+    if (msg.match[1] > 19) {
       msg.match[1] = 19;
       msg.send('Thanks to Kyle, catbombs are limited to 20 at a time. Enjoy');
     }
@@ -101,7 +101,7 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
 
-    if (msg.match[1] > 19) { 
+    if (msg.match[1] > 19) {
       msg.match[1] = 19;
       msg.send('Thanks to Kyle, catbombs are limited to 20 at a time. Enjoy');
     }
@@ -117,14 +117,18 @@ module.exports = (robot) => {
 
   robot.hear(/^nasa apod$/i, (msg) => {
     const user = msg.message.user;
+    const apiKey = process.env.NASA_API_KEY;
+
+    robot.logger.info(`got nasa apiKey ${apiKey}`);
 
     // eslint-disable-next-line no-new
     new Promise((resolve, reject) => {
-      robot.http(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`)
+      robot.http(`https://api.nasa.gov/planetary/apod?api_key=${apiKey}`)
         .get((err, _response, body) => {
           err ? reject(err) : resolve(body);
         })
         .then(body => JSON.parse(body))
+        .then(body => robot.logger.info(`got json body ${body}`))
         .then(json => decode(json.value.explanation))
         .then(explanation => msg.send(explanation))
         .then(json => decode(json.value.hdurl))
@@ -132,7 +136,7 @@ module.exports = (robot) => {
         .catch(err => msg.reply(`error in 'nasa apod' ${err}`));
     });
 
-    robot.logger.info(`${user.name} catbomb info ${msg.message.text}`);
+    robot.logger.info(`${user.name} nasa info ${msg.message.text}`);
   });
 
   // point out topic changes
