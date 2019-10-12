@@ -84,9 +84,9 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
 
-    if (msg.match[1] > 19) {
-      msg.match[1] = 19;
-      msg.send('Thanks to Kyle, catbombs are limited to 20 at a time. Enjoy');
+    if (msg.match[1] > 9) {
+      msg.match[1] = 9;
+      msg.send('Catbombs are limited to 10 at a time. Enjoy');
     }
 
     for (let i = 0; i < msg.match[1]; i++) {
