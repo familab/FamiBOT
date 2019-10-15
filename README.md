@@ -40,10 +40,13 @@ Then you can interact with FamiBOT by typing `FamiBOT help`.
 
 Assumes you can docker the things. Nab a slack token for testfamibot from [slack hubot integration link](https://familab.slack.com/apps/A0F7XDU93-hubot?page=1)
 
-`docker build -t alpine-hubot .` builds using the Dockerfile.
+`docker build -t famibot-hubot .` builds using the Dockerfile.
+
+Spin up redis
+`docker run --name famibot-redis –p 6379:6379 redis`
 
 Use the slack token here to get it running. It's polite to make sure nobody else is testing. Not sure what happens when you run two...
-`docker run --name testfamibot -e HUBOT_SLACK_TOKEN=$SLACK_API_TOKEN -e HUBOT_HEROKU_KEEPALIVE_URL=http://localhost:8080/ -p 80:80 -d alpine-hubot`
+`docker run --name testfamibot -e HUBOT_SLACK_TOKEN=$SLACK_API_TOKEN -e HUBOT_HEROKU_KEEPALIVE_URL=http://localhost:8080/ -p 80:80 -d famibot-hubot`
 
 read your logs: `docker logs testfamibot`
 

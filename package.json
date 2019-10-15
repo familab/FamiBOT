@@ -5,34 +5,65 @@
   "author": "Lance Hudson <lance@familab.org>",
   "description": "A bot for FamiLAB Slack",
   "dependencies": {
-    "hubot": "^2.19.0",
-    "hubot-4chan": "0.0.1",
-    "hubot-business-cat": "^1.5.13",
-    "hubot-calculator": "^0.4.0",
-    "hubot-coin": "^0.0.2",
-    "hubot-diagnostics": "^1.0.0",
-    "hubot-dogeme": "^1.0.0",
-    "hubot-github-identity": "^0.10.0",
-    "hubot-google-images": "^0.2.7",
-    "hubot-google-translate": "^0.2.1",
-    "hubot-help": "^1.0.1",
+    "decode-html": "^2.0.0",
+    "hubot": "3.3.2",
+    "hubot-business-cat": "1.5.13",
+    "hubot-calculator": "0.4.0",
+    "hubot-coin": "0.0.2",
+    "hubot-darts": "1.0.4",
+    "hubot-diagnostics": "1.0.0",
+    "hubot-dogeme": "1.0.0",
+    "hubot-google-translate": "0.2.1",
+    "hubot-help": "1.0.1",
     "hubot-heroku-keepalive": "1.0.3",
     "hubot-maps": "0.0.3",
-    "hubot-motivate": "^3.0.0",
+    "hubot-markov": "2.0.0",
+    "hubot-motivate": "3.0.0",
     "hubot-mute": "0.0.9",
-    "hubot-plusplus": "^1.4.0",
+    "hubot-plusplus": "1.4.0",
     "hubot-pugme": "0.1.1",
-    "hubot-redis-brain": "^1.0.0",
-    "hubot-rules": "^0.1.2",
-    "hubot-scripts": "^2.17.2",
-    "hubot-seen": "^1.0.1",
-    "hubot-shipit": "^0.2.1",
-    "hubot-slack": "^4.4.0",
-    "hubot-tell": "^1.2.4",
-    "newrelic": "^1.21.1",
-    "redis": "^2.7.1"
+    "hubot-redis-brain": "1.0.0",
+    "hubot-rules": "0.1.2",
+    "hubot-scripts": "2.17.2",
+    "hubot-seen": "1.0.1",
+    "hubot-shipit": "0.2.1",
+    "hubot-slack": "4.7.1",
+    "hubot-tell": "1.2.4",
+    "redis": "2.7.1",
+    "uuid": "3.3.3",
+    "ws": ">=3.3.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "co": "^4.6.0",
+    "eslint": "^6.5.1",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-hubot-js": "^1.0.4",
+    "hubot-test-helper": "^1.9.0",
+    "husky": "^3.0.8",
+    "mocha": "^6.2.1",
+    "nodemon": "^1.19.3"
+  },
+  "scripts": {
+    "build": "echo Ok done",
+    "dev": "bash ./bin/dev.sh",
+    "lint": "eslint . --fix --cache",
+    "test": "mocha tests --colors --diff --check-leaks"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run test"
+    }
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "test/*",
+      "bin/*",
+      "node_modules/*"
+    ],
+    "delay": "1500"
   },
   "engines": {
-    "node": "8.11.1"
+    "node": "10.16.3"
   }
 }

@@ -2,7 +2,9 @@
 
 set -e
 
-npm install
+export HUBOT_HEROKU_KEEPALIVE_URL=https://famibot.herokuapp.com/famibot/scores
+
+npm ci
 export PATH="node_modules/.bin:node_modules/hubot/node_modules/.bin:$PATH"
 
 exec node_modules/.bin/hubot --name "FamiBOT" "$@" -l --alias "Jarvis"

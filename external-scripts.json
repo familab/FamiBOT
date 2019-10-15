@@ -1,10 +1,9 @@
 [
-  "hubot-4chan",
   "hubot-business-cat",
   "hubot-calculator",
   "hubot-diagnostics",
+  "hubot-darts",
   "hubot-dogeme",
-  "hubot-google-images",
   "hubot-google-translate",
   "hubot-help",
   "hubot-heroku-keepalive",
