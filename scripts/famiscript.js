@@ -34,6 +34,15 @@ const badger = [
   'badgers? Why always badgers? I love them, but really?'
 ];
 
+function isInt(value) {
+  var x;
+  if (isNaN(value)) {
+    return false;
+  }
+  x = parseFloat(value);
+  return (x | 0) === x;
+}
+
 module.exports = (robot) => {
   // badger badger badger
   robot.hear(/badger/i, (msg) => {
@@ -66,14 +75,14 @@ module.exports = (robot) => {
 
   robot.hear(/^catbomb (\d+)$/i, (msg) => {
     const user = msg.message.user;
-
-    if (Number.isInteger(msg.match[1])) {
-      if (msg.match[1] > 19) {
-        msg.match[1] = 19;
+    const number = msg.match[1];
+    if ( isInt(number) ) {
+      if (number > 19) {
+        number = 19;
         msg.send('Catbombs are limited to 10 at a time. Enjoy');
       }
 
-      for (let i = 0; i < msg.match[1]; i++) {
+      for (let i = 0; i < number; i++) {
         const rand = Math.round(Math.random() * 30000);
         setTimeout(() => {
           msg.send(`https://cataas.com/cat/gif?${uuidv1()}`);
@@ -81,20 +90,21 @@ module.exports = (robot) => {
       }
       robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
     } else {
-      robot.logger.info(`${user.name} catbombed a non-number ${msg.match[1]}`);
+      msg.say("naughty!");
+      robot.logger.info(`${user.name} catbombed a non-number ${number}`);
     }
   });
 
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
-
-    if (Number.isInteger(msg.match[1])) {
-      if (msg.match[1] > 9) {
-        msg.match[1] = 9;
+    const number = msg.match[1];
+    if ( isInt(number) ) {
+      if (number > 9) {
+        number = 9;
         msg.send('Catbombs are limited to 10 at a time. Enjoy');
       }
   
-      for (let i = 0; i < msg.match[1]; i++) {
+      for (let i = 0; i < number; i++) {
         const rand = Math.round(Math.random() * 15000);
         setTimeout(() => {
           msg.send(`https://cataas.com/cat/says/${encodeURI(msg.match[2])}?${uuidv1()}`);
@@ -102,7 +112,8 @@ module.exports = (robot) => {
       }
       robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
     } else {
-      robot.logger.info(`${user.name} catbombed a non-number ${msg.match[1]}`);
+      msg.say("naughty!");
+      robot.logger.info(`${user.name} catbombed a non-number ${number}`);
     }
   });
 
