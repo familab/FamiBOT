@@ -75,10 +75,10 @@ module.exports = (robot) => {
 
   robot.hear(/^catbomb (\d+)$/i, (msg) => {
     const user = msg.message.user;
-    const number = msg.match[1];
+    let number = msg.match[1];
     if ( isInt(number) ) {
-      if (number > 19) {
-        number = 19;
+      if (number > 9) {
+        number = 9;
         msg.send('Catbombs are limited to 10 at a time. Enjoy');
       }
 
@@ -97,7 +97,7 @@ module.exports = (robot) => {
 
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
-    const number = msg.match[1];
+    let number = msg.match[1];
     if ( isInt(number) ) {
       if (number > 9) {
         number = 9;
