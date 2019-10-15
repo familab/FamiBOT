@@ -67,52 +67,43 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+)$/i, (msg) => {
     const user = msg.message.user;
 
-    if (msg.match[1] > 19) {
-      msg.match[1] = 19;
-      msg.send('Thanks to Kyle, catbombs are limited to 20 at a time. Enjoy');
-    }
+    if (Number.isInteger(msg.match[1])) {
+      if (msg.match[1] > 19) {
+        msg.match[1] = 19;
+        msg.send('Catbombs are limited to 10 at a time. Enjoy');
+      }
 
-    for (let i = 0; i < msg.match[1]; i++) {
-      const rand = Math.round(Math.random() * 30000);
-      setTimeout(() => {
-        msg.send(`https://cataas.com/cat/gif?${uuidv1()}`);
-      }, rand);
+      for (let i = 0; i < msg.match[1]; i++) {
+        const rand = Math.round(Math.random() * 30000);
+        setTimeout(() => {
+          msg.send(`https://cataas.com/cat/gif?${uuidv1()}`);
+        }, rand);
+      }
+      robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
+    } else {
+      robot.logger.info(`${user.name} catbombed a non-number ${msg.match[1]}`);
     }
-    robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
   });
 
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
 
-    if (msg.match[1] > 9) {
-      msg.match[1] = 9;
-      msg.send('Catbombs are limited to 10 at a time. Enjoy');
+    if (Number.isInteger(msg.match[1])) {
+      if (msg.match[1] > 9) {
+        msg.match[1] = 9;
+        msg.send('Catbombs are limited to 10 at a time. Enjoy');
+      }
+  
+      for (let i = 0; i < msg.match[1]; i++) {
+        const rand = Math.round(Math.random() * 15000);
+        setTimeout(() => {
+          msg.send(`https://cataas.com/cat/says/${encodeURI(msg.match[2])}?${uuidv1()}`);
+        }, rand);
+      }
+      robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
+    } else {
+      robot.logger.info(`${user.name} catbombed a non-number ${msg.match[1]}`);
     }
-
-    for (let i = 0; i < msg.match[1]; i++) {
-      const rand = Math.round(Math.random() * 15000);
-      setTimeout(() => {
-        msg.send(`https://cataas.com/cat/says/${encodeURI(msg.match[2])}?${uuidv1()}`);
-      }, rand);
-    }
-    robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
-  });
-
-  robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
-    const user = msg.message.user;
-
-    if (msg.match[1] > 9) {
-      msg.match[1] = 9;
-      msg.send('Catbombs are limited to 10 at a time. Enjoy');
-    }
-
-    for (let i = 0; i < msg.match[1]; i++) {
-      const rand = Math.round(Math.random() * 15000);
-      setTimeout(() => {
-        msg.send(`https://cataas.com/cat/says/${encodeURI(msg.match[2])}?${uuidv1()}`);
-      }, rand);
-    }
-    robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
   });
 
   robot.hear(/^nasa apod$/i, (msg) => {
