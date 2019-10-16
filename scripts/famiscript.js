@@ -203,7 +203,7 @@ module.exports = (robot) => {
         "from":"${encodeURI(messageUser.name)}",
         "to":"${encodeURI(name)}",
         "message":"${encodeURI(msg.match[2])}",
-        "datetime": "${currentDateTime.toString}"
+        "datetime": "${currentDateTime}"
       }`
     );
     msg.send(`Adding "@${name} for ${msg.match[2]}" from @${messageUser.name}. Thanks!`);
