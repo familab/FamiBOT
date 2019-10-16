@@ -34,6 +34,15 @@ const badger = [
   'badgers? Why always badgers? I love them, but really?'
 ];
 
+function isInt(value) {
+  var x;
+  if (isNaN(value)) {
+    return false;
+  }
+  x = parseFloat(value);
+  return (x | 0) === x;
+}
+
 module.exports = (robot) => {
   // badger badger badger
   robot.hear(/badger/i, (msg) => {
@@ -66,53 +75,46 @@ module.exports = (robot) => {
 
   robot.hear(/^catbomb (\d+)$/i, (msg) => {
     const user = msg.message.user;
+    let number = msg.match[1];
+    if ( isInt(number) ) {
+      if (number > 9) {
+        number = 9;
+        msg.send('Catbombs are limited to 10 at a time. Enjoy');
+      }
 
-    if (msg.match[1] > 19) {
-      msg.match[1] = 19;
-      msg.send('Thanks to Kyle, catbombs are limited to 20 at a time. Enjoy');
+      for (let i = 0; i < number; i++) {
+        const rand = Math.round(Math.random() * 30000);
+        setTimeout(() => {
+          msg.send(`https://cataas.com/cat/gif?${uuidv1()}`);
+        }, rand);
+      }
+      robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
+    } else {
+      msg.say("naughty!");
+      robot.logger.info(`${user.name} catbombed a non-number ${number}`);
     }
-
-    for (let i = 0; i < msg.match[1]; i++) {
-      const rand = Math.round(Math.random() * 30000);
-      setTimeout(() => {
-        msg.send(`https://cataas.com/cat/gif?${uuidv1()}`);
-      }, rand);
-    }
-    robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
   });
 
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
-
-    if (msg.match[1] > 9) {
-      msg.match[1] = 9;
-      msg.send('Catbombs are limited to 10 at a time. Enjoy');
+    let number = msg.match[1];
+    if ( isInt(number) ) {
+      if (number > 9) {
+        number = 9;
+        msg.send('Catbombs are limited to 10 at a time. Enjoy');
+      }
+  
+      for (let i = 0; i < number; i++) {
+        const rand = Math.round(Math.random() * 15000);
+        setTimeout(() => {
+          msg.send(`https://cataas.com/cat/says/${encodeURI(msg.match[2])}?${uuidv1()}`);
+        }, rand);
+      }
+      robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
+    } else {
+      msg.say("naughty!");
+      robot.logger.info(`${user.name} catbombed a non-number ${number}`);
     }
-
-    for (let i = 0; i < msg.match[1]; i++) {
-      const rand = Math.round(Math.random() * 15000);
-      setTimeout(() => {
-        msg.send(`https://cataas.com/cat/says/${encodeURI(msg.match[2])}?${uuidv1()}`);
-      }, rand);
-    }
-    robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
-  });
-
-  robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
-    const user = msg.message.user;
-
-    if (msg.match[1] > 9) {
-      msg.match[1] = 9;
-      msg.send('Catbombs are limited to 10 at a time. Enjoy');
-    }
-
-    for (let i = 0; i < msg.match[1]; i++) {
-      const rand = Math.round(Math.random() * 15000);
-      setTimeout(() => {
-        msg.send(`https://cataas.com/cat/says/${encodeURI(msg.match[2])}?${uuidv1()}`);
-      }, rand);
-    }
-    robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
   });
 
   robot.hear(/^nasa apod$/i, (msg) => {
