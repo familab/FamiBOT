@@ -195,21 +195,10 @@ module.exports = (robot) => {
   robot.hear(/^awesome add @?([\w .\-]+) (.*)$/i, (msg) => {
     const messageUser = msg.message.user;
     const name = msg.match[1].trim();
-    const users = robot.brain.usersForFuzzyName(name);
-    if (users.length === 1) {
-      const user = users[0];
-      // redis hash of key, adding user, user who was awesome, message
-      client.hmset(`awesome:${uuidv1()}`, messageUser, user, msg.match[2].trim());
-      msg.send(`Adding ${msg.match[2].trim()} for ${user} from ${messageUser}. Thanks!`);
-      robot.logger.info(`${user.name} an awesome add ${msg.message.text}`);
-    } else {
-      msg.send('I couldn\'t figure out who you are :/ Sorry. Awesome box message not added');
-      robot.messageRoom('CP3RNDEEL', `Couldn't find user for ${name} Users is ${users}
-      trying to add and awesome box
-      \`${msg.message.text}\`
-      `);
-      robot.logger.info(`ERROR: ${messageUser.name} an awesome add ${msg.message.text}`);
-    }
+    // redis hash of key, adding user, user who was awesome, message
+    client.hmset(`awesome:${uuidv1()}`, messageUser, name, msg.match[2].trim());
+    msg.send(`Adding ${msg.match[2].trim()} for ${name} from ${messageUser}. Thanks!`);
+    robot.logger.info(`${messageUser.name} an awesome add ${msg.message.text}`);
   });
 
   robot.hear(/^awesome list$/i, (msg) => {
