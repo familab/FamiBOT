@@ -35,7 +35,7 @@ const badger = [
 ];
 
 function isInt(value) {
-  var x;
+  let x;
   if (isNaN(value)) {
     return false;
   }
@@ -76,7 +76,7 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+)$/i, (msg) => {
     const user = msg.message.user;
     let number = msg.match[1];
-    if ( isInt(number) ) {
+    if (isInt(number)) {
       if (number > 9) {
         number = 9;
         msg.send('Catbombs are limited to 10 at a time. Enjoy');
@@ -90,7 +90,7 @@ module.exports = (robot) => {
       }
       robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
     } else {
-      msg.say("naughty!");
+      msg.say('naughty!');
       robot.logger.info(`${user.name} catbombed a non-number ${number}`);
     }
   });
@@ -98,12 +98,12 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
     let number = msg.match[1];
-    if ( isInt(number) ) {
+    if (isInt(number)) {
       if (number > 9) {
         number = 9;
         msg.send('Catbombs are limited to 10 at a time. Enjoy');
       }
-  
+
       for (let i = 0; i < number; i++) {
         const rand = Math.round(Math.random() * 15000);
         setTimeout(() => {
@@ -112,7 +112,7 @@ module.exports = (robot) => {
       }
       robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
     } else {
-      msg.say("naughty!");
+      msg.say('naughty!');
       robot.logger.info(`${user.name} catbombed a non-number ${number}`);
     }
   });
