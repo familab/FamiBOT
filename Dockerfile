@@ -5,6 +5,7 @@ LABEL   author="Craig Skelton <cskelton@gmail.com>" \
         description="testfamibot the test bot for Famibot changes"
 
 # globals
+RUN apk --update add redis
 RUN npm i -g coffeescript
 
 # Create hubot user
