@@ -192,7 +192,7 @@ module.exports = (robot) => {
   });
 
   // eslint-disable-next-line no-useless-escape
-  robot.hear(/^awesome add @?([\w .\-]+) (.*)$/i, (msg) => {
+  robot.hear(/^awesome add @?([\w.-]+) (.*)$/i, (msg) => {
     const messageUser = msg.message.user;
     const name = msg.match[1].trim();
     // redis hash of key, adding user, user who was awesome, message
@@ -209,7 +209,11 @@ module.exports = (robot) => {
 
     client.smembers('awesome', (err, object) => {
       for (const [key, value] of Object.entries(object)) {
-        msg.send(`${key}: ${value}`);
+        const json = JSON.parse(value);
+        msg.send(`
+          json: ${json}
+          ${key}: @${json.from} sent "${json.message} for @${json.to}`
+        );
       }
     });
   });
