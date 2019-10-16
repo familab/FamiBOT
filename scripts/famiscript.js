@@ -176,7 +176,7 @@ module.exports = (robot) => {
     msg.send(`Familab Awesome Box
     Usage:
     Add: awesome @person The reason @person is awesome is for making a toaser with a jet engine. Woot!
-      Adds an awesome box entry for @person. It also records who sent it.
+      Adds an awesome box message for @person. It also records who sent it.
     List: awesome list
       Lists all of the current Awesome Box Entries
     Archive: awesome archive
@@ -203,8 +203,8 @@ module.exports = (robot) => {
       msg.send(`Adding ${msg.match[2].trim()} for ${user} from ${messageUser}. Thanks!`);
       robot.logger.info(`${user.name} an awesome add ${msg.message.text}`);
     } else {
-      msg.send('I couldn\'t figure out who you are :/\nI\'ll message the admins');
-      msg.messageRoom('famibot_test', `Couldn't find user for ${name} Users is ${users}
+      msg.send('I couldn\'t figure out who you are :/ Sorry. Awesome box message not added');
+      robot.messageRoom('famibot_test', `Couldn't find user for ${name} Users is ${users}
       trying to add and awesome box
       \`${msg.message.text}\`
       `);
