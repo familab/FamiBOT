@@ -215,7 +215,7 @@ module.exports = (robot) => {
     const key = msg.match[1];
     // redis hash of key, adding user, user who was awesome, message
     if (messageUser.name === 'craigske') { // U31NDNH4Y
-      if (client.srem('awesome', key) === 1) {
+      if (client.srem('awesome', key.toString) === 1) {
         msg.send(`removed ${key}`);
         robot.logger.info(`${messageUser.name} awesome delete ${msg.message.text}`);
       } else {
