@@ -209,7 +209,11 @@ module.exports = (robot) => {
 
     client.smembers('awesome', (err, object) => {
       for (const [key, value] of Object.entries(object)) {
-        msg.send(`${key}: ${value}`);
+        const json = JSON.parse(value);
+        msg.send(`
+          json: ${json}
+          ${key}: @${json.from} sent "${json.message} for @${json.to}`
+        );
       }
     });
   });
