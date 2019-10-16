@@ -185,7 +185,7 @@ module.exports = (robot) => {
       Lists all of the Awesome's in the archive (may be a long list)
     Stats: awesome stats
       Gives some Awesome box stats
-    Info/Help: awesome (info|help)
+    Info/Help: awesome (info|help) 
       This message
     Search: <currently not implemented> 
     `);
@@ -196,19 +196,20 @@ module.exports = (robot) => {
     const messageUser = msg.message.user;
     const name = msg.match[1].trim();
     // redis hash of key, adding user, user who was awesome, message
-    client.hmset(`awesome:${uuidv1()}`, messageUser, name, msg.match[2].trim());
-    msg.send(`Adding ${msg.match[2].trim()} for ${name} from ${messageUser}. Thanks!`);
+    client.sadd(
+      'awesome',
+      `{"from":"${encodeURI(messageUser.name)}", "to":"${encodeURI(name)}", "message":"${encodeURI(msg.match[2])}"}`
+    );
+    msg.send(`Adding "${msg.match[2]}" for @${name} from @${messageUser.name}. Thanks!`);
     robot.logger.info(`${messageUser.name} an awesome add ${msg.message.text}`);
   });
 
   robot.hear(/^awesome list$/i, (msg) => {
     // const messageUser = msg.message.user;
 
-    client.hgetall('awesome:*', (err, object) => {
+    client.smembers('awesome', (err, object) => {
       for (const [key, value] of Object.entries(object)) {
         msg.send(`${key}: ${value}`);
-        msg.send(object);
-        robot.logger.info(object);
       }
     });
   });
