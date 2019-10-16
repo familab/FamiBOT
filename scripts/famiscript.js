@@ -204,7 +204,7 @@ module.exports = (robot) => {
       robot.logger.info(`${user.name} an awesome add ${msg.message.text}`);
     } else {
       msg.send('I couldn\'t figure out who you are :/ Sorry. Awesome box message not added');
-      robot.messageRoom('famibot_test', `Couldn't find user for ${name} Users is ${users}
+      robot.messageRoom('CP3RNDEEL', `Couldn't find user for ${name} Users is ${users}
       trying to add and awesome box
       \`${msg.message.text}\`
       `);
@@ -225,7 +225,7 @@ module.exports = (robot) => {
   });
 
   robot.router.get('/famibot/test/:message', (req, res) => {
-    robot.messageRoom('famibot_test', `webhook /famibot/test/:message got GET ${req.body}`);
+    robot.messageRoom('CP3RNDEEL', `webhook /famibot/test/:message got GET ${req.body}`);
     res.send('OK');
   });
 
@@ -233,7 +233,7 @@ module.exports = (robot) => {
     const room = req.params.room;
     const data = JSON.parse(req.body.payload);
     const secret = data.secret;
-    robot.messageRoom('famibot_test', `webhook /famibot/test/:message got POST 
+    robot.messageRoom('CP3RNDEEL', `webhook /famibot/test/:message got POST 
       ----------BEGIN DATA----------
       ${data}
       ----------END DATA----------
