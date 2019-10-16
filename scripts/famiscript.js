@@ -192,7 +192,7 @@ module.exports = (robot) => {
   });
 
   // eslint-disable-next-line no-useless-escape
-  robot.hear(/^awesome add @?([\w .\-]+) (.*)$/i, (msg) => {
+  robot.hear(/^awesome add @?([\w.-]+) (.*)$/i, (msg) => {
     const messageUser = msg.message.user;
     const name = msg.match[1].trim();
     // redis hash of key, adding user, user who was awesome, message
