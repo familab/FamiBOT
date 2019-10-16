@@ -235,6 +235,7 @@ module.exports = (robot) => {
         msg.send(
           `${key}: *"@${json.to} for ${decodeURI(json.message)}"* from @${json.from} at ${json.datetime}`
         );
+        robot.logger.info(json, key, value);
       }
     });
     robot.logger.info(`${messageUser.name} awesome list`);
