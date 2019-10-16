@@ -35,7 +35,7 @@ const badger = [
 ];
 
 function isInt(value) {
-  var x;
+  let x;
   if (isNaN(value)) {
     return false;
   }
@@ -76,7 +76,7 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+)$/i, (msg) => {
     const user = msg.message.user;
     let number = msg.match[1];
-    if ( isInt(number) ) {
+    if (isInt(number)) {
       if (number > 9) {
         number = 9;
         msg.send('Catbombs are limited to 10 at a time. Enjoy');
@@ -90,7 +90,7 @@ module.exports = (robot) => {
       }
       robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
     } else {
-      msg.say("naughty!");
+      msg.say('naughty!');
       robot.logger.info(`${user.name} catbombed a non-number ${number}`);
     }
   });
@@ -98,12 +98,12 @@ module.exports = (robot) => {
   robot.hear(/^catbomb (\d+) (.*)/i, (msg) => {
     const user = msg.message.user;
     let number = msg.match[1];
-    if ( isInt(number) ) {
+    if (isInt(number)) {
       if (number > 9) {
         number = 9;
         msg.send('Catbombs are limited to 10 at a time. Enjoy');
       }
-  
+
       for (let i = 0; i < number; i++) {
         const rand = Math.round(Math.random() * 15000);
         setTimeout(() => {
@@ -112,7 +112,7 @@ module.exports = (robot) => {
       }
       robot.logger.info(`${user.name} catbombed ${msg.message.text}`);
     } else {
-      msg.say("naughty!");
+      msg.say('naughty!');
       robot.logger.info(`${user.name} catbombed a non-number ${number}`);
     }
   });
@@ -128,7 +128,7 @@ module.exports = (robot) => {
       robot.http(`https://api.nasa.gov/planetary/apod?api_key=${apiKey}`)
         .get((err, _response, body) => {
           if (err) {
-            robot.logger.info(`http get error ${err}`)
+            robot.logger.info(`http get error ${err}`);
             reject(err);
           } else {
             resolve(body);
@@ -171,11 +171,72 @@ module.exports = (robot) => {
     });
   });
 
+  // AWESOME BOX
+  robot.hear(/^awesome( info| help|)$/i, (msg) => {
+    msg.send(`Familab Awesome Box
+    Usage:
+    Add: awesome @person The reason @person is awesome is for making a toaser with a jet engine. Woot!
+      Adds an awesome box entry for @person. It also records who sent it.
+    List: awesome list
+      Lists all of the current Awesome Box Entries
+    Archive: awesome archive
+      (Must be @board) Archives the current Awesome Box entries
+    Archive list: awesome archive list
+      Lists all of the Awesome's in the archive (may be a long list)
+    Stats: awesome stats
+      Gives some Awesome box stats
+    Info/Help: awesome (info|help)
+      This message
+    Search: <currently not implemented> 
+    `);
+  });
+
+  // eslint-disable-next-line no-useless-escape
+  robot.hear(/^awesome add @?([\w .\-]+) (.*)$/i, (msg) => {
+    const messageUser = msg.message.user;
+    const name = msg.match[1].trim();
+    const users = robot.brain.usersForFuzzyName(name);
+    if (users.length === 1) {
+      const user = users[0];
+      // redis hash of key, adding user, user who was awesome, message
+      client.hmset(`awesome:${uuidv1()}`, messageUser, user, msg.match[2].trim());
+      msg.send(`Adding ${msg.match[2].trim()} for ${user} from ${messageUser}. Thanks!`);
+      robot.logger.info(`${user.name} an awesome add ${msg.message.text}`);
+    } else {
+      msg.send('I couldn\'t figure out who you are :/\nI\'ll message the admins');
+      msg.messageRoom('CP3RNDEEL', `Couldn't find user for ${name} trying to add and awesome box
+      \`${msg.message.text}\`
+      `);
+      robot.logger.info(`ERROR: ${messageUser.name} an awesome add ${msg.message.text}`);
+    }
+  });
+
+  robot.hear(/^awesome list$/i, (msg) => {
+    // const messageUser = msg.message.user;
+
+    client.hgetall('awesome:*', (err, object) => {
+      for (const [key, value] of Object.entries(object)) {
+        msg.send(`${key}: ${value}`);
+        msg.send(object);
+        robot.logger.info(object);
+      }
+    });
+  });
+
+  robot.router.get('/famibot/test/:message', (req, res) => {
+    robot.messageRoom('CP3RNDEEL', `webhook /famibot/test/:message got GET ${req.body}`);
+    res.send('OK');
+  });
+
   robot.router.post('/famibot/test/:message', (req, res) => {
     const room = req.params.room;
     const data = JSON.parse(req.body.payload);
     const secret = data.secret;
-    robot.messageRoom('', `webhook /famibot/test/:message got ${data} with secret ${secret} for room ${room}`);
+    robot.messageRoom('CP3RNDEEL', `webhook /famibot/test/:message got POST 
+      ----------BEGIN DATA----------
+      ${data}
+      ----------END DATA----------
+      with secret ${secret} for room ${room}`);
     res.send('OK');
   });
 

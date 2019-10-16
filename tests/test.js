@@ -7,7 +7,7 @@ const helper = new Helper('../scripts/famiscript.js');
 const co = require('co');
 const expect = require('chai').expect;
 
-describe('famiscript', () => {
+xdescribe('famiscript', () => {
   beforeEach(() => {
     this.room = helper.createRoom({ name: 'room', httpd: false });
   });
