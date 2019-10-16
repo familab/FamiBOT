@@ -195,13 +195,36 @@ module.exports = (robot) => {
   robot.hear(/^awesome add @?([\w.-]+) (.*)$/i, (msg) => {
     const messageUser = msg.message.user;
     const name = msg.match[1].trim();
+    const currentDateTime = new Date();
     // redis hash of key, adding user, user who was awesome, message
     client.sadd(
       'awesome',
-      `{"from":"${encodeURI(messageUser.name)}", "to":"${encodeURI(name)}", "message":"${encodeURI(msg.match[2])}"}`
+      `{
+        "from":"${encodeURI(messageUser.name)}",
+        "to":"${encodeURI(name)}",
+        "message":"${encodeURI(msg.match[2])}",
+        "datetime": "${currentDateTime.toString}"
+      }`
     );
-    msg.send(`Adding "${msg.match[2]}" for @${name} from @${messageUser.name}. Thanks!`);
+    msg.send(`Adding "@${name} for ${msg.match[2]}" from @${messageUser.name}. Thanks!`);
     robot.logger.info(`${messageUser.name} an awesome add ${msg.message.text}`);
+  });
+
+  robot.hear(/^awesome delete (\d+)$/i, (msg) => {
+    const messageUser = msg.message.user;
+    const key = msg.match[1];
+    // redis hash of key, adding user, user who was awesome, message
+    if (messageUser.name === 'craigske') { // U31NDNH4Y
+      if (client.srem('awesome', `${key}`)) {
+        msg.send(`removed ${key}`);
+        robot.logger.info(`${messageUser.name} an awesome add ${msg.message.text}`);
+      } else {
+        msg.send(`FAILED to remove ${key}`);
+        robot.logger.info(`${messageUser.name} an awesome add ${msg.message.text}`);
+      }
+    } else {
+      msg.send(`${messageUser.name} You're not craigske, you bastard`);
+    }
   });
 
   robot.hear(/^awesome list$/i, (msg) => {
@@ -211,8 +234,7 @@ module.exports = (robot) => {
       for (const [key, value] of Object.entries(object)) {
         const json = JSON.parse(value);
         msg.send(`
-          json: ${json}
-          ${key}: @${json.from} sent "${json.message} for @${json.to}`
+          ${key}: @${json.from} sent "${json.message} for @${json.to} at ${json.datetime}`
         );
       }
     });
