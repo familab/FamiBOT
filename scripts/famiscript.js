@@ -195,6 +195,7 @@ module.exports = (robot) => {
   robot.hear(/^awesome add @?([\w.-]+) (.*)$/i, (msg) => {
     const messageUser = msg.message.user;
     const name = msg.match[1].trim();
+    const user = robot.brain.userForName(name);
     const currentDateTime = new Date();
     // redis hash of key, adding user, user who was awesome, message
     client.sadd(
@@ -207,10 +208,10 @@ module.exports = (robot) => {
       }`
     );
     robot.send(
-      `@${name}`,
+      user,
       `You just got an Awesome Box Message! "${msg.match[2]}" from @${messageUser}.`
     );
-    msg.send(`Adding "@${name} for ${msg.match[2]}" from @${messageUser.name}. Thanks!`);
+    msg.send(`Adding "@${name} ${msg.match[2]}" from @${messageUser.name}. Thanks!`);
     robot.logger.info(`${messageUser.name} an awesome add ${msg.message.text}`);
   });
 
