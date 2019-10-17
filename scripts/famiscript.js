@@ -206,6 +206,10 @@ module.exports = (robot) => {
         "datetime": "${currentDateTime}"
       }`
     );
+    robot.messageUser(
+      `@${name}`,
+      `You just got an Awesome Box Message! "${msg.match[2]}" from @${messageUser}.`
+    );
     msg.send(`Adding "@${name} for ${msg.match[2]}" from @${messageUser.name}. Thanks!`);
     robot.logger.info(`${messageUser.name} an awesome add ${msg.message.text}`);
   });
