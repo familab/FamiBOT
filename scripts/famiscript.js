@@ -239,7 +239,7 @@ module.exports = (robot) => {
       for (const [key, value] of Object.entries(object)) {
         const json = JSON.parse(value);
         msg.send(
-          `${key}: *"@${json.to} for ${decodeURI(json.message)}"* from @${json.from} at ${json.datetime}`
+          `${key}: *"@${json.to} ${decodeURI(json.message)}"* from @${json.from} at ${json.datetime}`
         );
         robot.logger.info(json, key, value);
       }
