@@ -43,6 +43,26 @@ function isInt(value) {
   return (x | 0) === x;
 }
 
+function getUser(msg, bot, userInputUser) {
+  try {
+    const user = bot.adapter.client.rtm.dataStore.getUserByName(userInputUser);
+    if (user) {
+      bot.logger.info(`getUser: Got results for ${userInputUser} by name`);
+      return user;
+    }
+  // eslint-disable-next-line no-console
+  } catch (e) { console.log('booo'); }
+  try {
+    const user = bot.adapter.client.rtm.dataStore.getUserById(userInputUser);
+    if (user) {
+      bot.logger.info(`getUser: Got results for ${userInputUser} by id`);
+      return user;
+    }
+  // eslint-disable-next-line no-console
+  } catch (e) { console.log('boooooo'); }
+  return userInputUser;
+}
+
 module.exports = (robot) => {
   // badger badger badger
   robot.hear(/badger/i, (msg) => {
@@ -195,8 +215,10 @@ module.exports = (robot) => {
   robot.hear(/^awesome add @?([\w.-]+) (.*)$/i, (msg) => {
     const messageUser = msg.message.user;
     const name = msg.match[1].trim();
-    const user = robot.adapter.client.rtm.dataStore.getDMByName(name);
     const currentDateTime = new Date();
+    // lets find our victim
+    const user = getUser(msg, robot, name);
+
     // redis hash of key, adding user, user who was awesome, message
     client.sadd(
       'awesome',
