@@ -231,7 +231,7 @@ module.exports = (robot) => {
     } else {
       msg.send(`${messageUser.name} You're not craigske, you bastard`);
     }
-  }
+  });
 
   robot.hear(/^awesome list$/i, (msg) => {
     const messageUser = msg.message.user;
