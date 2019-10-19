@@ -192,27 +192,27 @@ module.exports = (robot) => {
   });
 
   // AWESOME BOX
-  robot.hear(/^awesome( info| help|)$/i, (msg) => {
+  robot.hear(/^awesomebox( info| help|)$/i, (msg) => {
     msg.send(`Familab Awesome Box
     Usage:
-    Add: awesome @person The reason @person is awesome is for making a toaser with a jet engine. Woot!
+    Add: awesomebox @person The reason @person is awesome is for making a toaser with a jet engine. Woot!
       Adds an awesome box message for @person. It also records who sent it.
-    List: awesome list
+    List: awesomebox list
       Lists all of the current Awesome Box Entries
-    Archive: awesome archive
+    Archive: awesomebox archive
       (Must be @board) Archives the current Awesome Box entries
     Archive list: awesome archive list
       Lists all of the Awesome's in the archive (may be a long list)
-    Stats: awesome stats
+    Stats: awesomebox stats <currently not implemented> 
       Gives some Awesome box stats
-    Info/Help: awesome (info|help) 
+    Info/Help: awesomebox (info|help) 
       This message
     Search: <currently not implemented> 
     `);
   });
 
   // eslint-disable-next-line no-useless-escape
-  robot.hear(/^awesome add @?([\w.-]+) (.*)$/i, (msg) => {
+  robot.hear(/^awesomebox add @?([\w.-]+) (.*)$/i, (msg) => {
     const messageUser = msg.message.user;
     const name = msg.match[1].trim();
     const currentDateTime = new Date();
@@ -220,7 +220,7 @@ module.exports = (robot) => {
     const user = getUser(msg, robot, name);
 
     // redis hash of key, adding user, user who was awesome, message
-    client.sadd(
+    client.zadd(
       'awesome',
       `{
         "from":"${encodeURI(messageUser.name)}",
@@ -238,12 +238,12 @@ module.exports = (robot) => {
     robot.logger.info(`${messageUser.name} an awesome add ${msg.message.text}`);
   });
 
-  robot.hear(/^awesome delete (\d+)$/i, (msg) => {
+  robot.hear(/^awesomebox delete (\d+)$/i, (msg) => {
     const messageUser = msg.message.user;
     const key = msg.match[1];
     // redis hash of key, adding user, user who was awesome, message
     if (messageUser.name === 'craigske') { // U31NDNH4Y
-      if (client.srem('awesome', key.toString) === 1) {
+      if (client.zrem('awesome', key, -1) === 1) {
         msg.send(`removed ${key}`);
         robot.logger.info(`${messageUser.name} awesome delete ${msg.message.text}`);
       } else {
@@ -252,10 +252,11 @@ module.exports = (robot) => {
       }
     } else {
       msg.send(`${messageUser.name} You're not craigske, you bastard`);
+      robot.logger.info(`${messageUser.name} tried to awesome delete without perms ${msg.message.text}`);
     }
   });
 
-  robot.hear(/^awesome list$/i, (msg) => {
+  robot.hear(/^awesomebox list$/i, (msg) => {
     const messageUser = msg.message.user;
     client.smembers('awesome', (err, object) => {
       for (const [key, value] of Object.entries(object)) {
