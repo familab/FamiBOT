@@ -234,7 +234,7 @@ module.exports = (robot) => {
       `You just got an Awesome Box Message! "${msg.match[2]}" from @${messageUser.name}.`
     );
     msg.send(`Adding "@${name} ${msg.match[2]}" from @${messageUser.name}. Thanks!`);
-    msg.send(`@${messageUser.name}++ for submitting an awesome box message`);
+    msg.send(`@${messageUser.name} ++ for submitting an awesome box message`);
     robot.logger.info(`${messageUser.name} an awesome add ${msg.message.text}`);
   });
 
