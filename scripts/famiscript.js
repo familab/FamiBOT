@@ -8,6 +8,8 @@ const decode = require('decode-html');
 const redisUrl = process.env.REDISTOGO_URL || 'redis://127.0.0.1:6379';
 const client = redis.createClient(redisUrl);
 
+const MAX_REDIS_ORDERED_SET = 100000;
+
 const badger = [
   'Badgers? Honey badgers are the best',
   'I love honey badgers',
@@ -203,12 +205,13 @@ module.exports = (robot) => {
       (Must be @board) Archives the current Awesome Box entries
     Archive list: awesome archive list
       Lists all of the Awesome's in the archive (may be a long list)
-    Stats: awesomebox stats <currently not implemented> 
+    Stats: awesomebox stats
       Gives some Awesome box stats
     Info/Help: awesomebox (info|help) 
       This message
     Search: <currently not implemented> 
     `);
+    client.incr('awesomeinfo');
   });
 
   // eslint-disable-next-line no-useless-escape
@@ -218,17 +221,19 @@ module.exports = (robot) => {
     const currentDateTime = new Date();
     // lets find our victim
     const user = getUser(msg, robot, name);
-
-    // redis hash of key, adding user, user who was awesome, message
-    client.zadd(
-      'awesome',
-      `{
-        "from":"${encodeURI(messageUser.name)}",
-        "to":"${encodeURI(name)}",
-        "message":"${encodeURI(msg.match[2])}",
-        "datetime": "${currentDateTime}"
-      }`
-    );
+    client.zcount('awesome', 0, MAX_REDIS_ORDERED_SET, (_err, numberOfItems) => {
+      client.zadd(
+        'awesome',
+        numberOfItems + 1,
+        `{
+          "from":"${encodeURI(messageUser.name)}",
+          "to":"${encodeURI(name)}",
+          "message":"${encodeURI(msg.match[2])}",
+          "datetime": "${currentDateTime}"
+        }`
+      );
+    });
+    client.incr('awesomeadd');
     robot.send(
       user,
       `You just got an Awesome Box Message! "${msg.match[2]}" from @${messageUser.name}.`
@@ -242,14 +247,15 @@ module.exports = (robot) => {
     const messageUser = msg.message.user;
     const key = msg.match[1];
     // redis hash of key, adding user, user who was awesome, message
-    if (messageUser.name === 'craigske') { // U31NDNH4Y
-      if (client.zrem('awesome', key, -1) === 1) {
-        msg.send(`removed ${key}`);
-        robot.logger.info(`${messageUser.name} awesome delete ${msg.message.text}`);
-      } else {
-        msg.send(`FAILED to remove ${key}`);
-        robot.logger.info(`${messageUser.name} awesome delete ${msg.message.text}`);
-      }
+    if (messageUser.name === 'craigske' || messageUser.name === 'Shell') { // U31NDNH4Y
+      client.zrange('awesome', key, key, (err, member) => {
+        robot.logger.info(err, member);
+        client.zrem('awesome', member[0], () => {
+          msg.send(`removed ${key}`);
+          robot.logger.info(`${messageUser.name} awesome delete ${member[0]}`);
+          client.incr('awesomedelete');
+        });
+      });
     } else {
       msg.send(`${messageUser.name} You're not craigske, you bastard`);
       robot.logger.info(`${messageUser.name} tried to awesome delete without perms ${msg.message.text}`);
@@ -258,7 +264,45 @@ module.exports = (robot) => {
 
   robot.hear(/^awesomebox list$/i, (msg) => {
     const messageUser = msg.message.user;
-    client.smembers('awesome', (err, object) => {
+    client.zrange('awesome', 0, MAX_REDIS_ORDERED_SET, (err, object) => {
+      if ( !object ) {
+        msg.send('nada');
+      } else {
+        for (const [key, value] of Object.entries(object)) {
+          const json = JSON.parse(value);
+          msg.send(
+            `${key}: *"@${json.to} ${decodeURI(json.message)}"* from @${json.from} at ${json.datetime}`
+          );
+          robot.logger.info(json, key, value);
+        }
+      }
+    });
+    client.incr('awesomelist');
+    robot.logger.info(`${messageUser.name} awesome list`);
+  });
+
+  robot.hear(/^awesomebox archive$/i, (msg) => {
+    const messageUser = msg.message.user;
+    client.zcount('awesomearchive', 0, MAX_REDIS_ORDERED_SET, (numberOfItems) => {
+      if (messageUser.name === 'craigske') {
+        client.zrange('awesome', 0, numberOfItems, (_err, results) => {
+          for (let i; i < results.length(); i++) {
+            client.zadd('awesomearchive', i, results[i]);
+            client.incr('awesomearchived');
+          }
+        });
+        client.zremrangebyrank('awesome', 0, numberOfItems);
+        client.incr('awesomearchive');
+      } else {
+        msg.send(`${messageUser.name} You're not craigske, you bastard`);
+        robot.logger.info(`${messageUser.name} tried to awesome delete without perms ${msg.message.text}`);
+      }
+    });
+  });
+
+  robot.hear(/^awesomebox archive list$/i, (msg) => {
+    const messageUser = msg.message.user;
+    client.zrange('awesomearchive', 0, MAX_REDIS_ORDERED_SET, (err, object) => {
       for (const [key, value] of Object.entries(object)) {
         const json = JSON.parse(value);
         msg.send(
@@ -267,6 +311,33 @@ module.exports = (robot) => {
         robot.logger.info(json, key, value);
       }
     });
+    client.incr('awesomearchivelist');
+    robot.logger.info(`${messageUser.name} awesome archive list`);
+  });
+
+  robot.hear(/^awesomebox stats$/i, (msg) => {
+    const messageUser = msg.message.user;
+    client.incr('awesomestats');
+    const awesomeinfo = client.get('awesomeinfo');
+    const awesomeadd = client.get('awesomeadd');
+    const awesomedelete = client.get('awesomedelete');
+    const awesomelist = client.get('awesomelist');
+    const awesomearchive = client.get('awesomearchive');
+    const awesomearchived = client.get('awesomearchived');
+    const awesomestats = client.get('awesomestats');
+    const sizeOfArchive = client.zcount('awesomearchive', 0 , 10000, (_err, number) => { number; });
+    const awesomearchivelist = client.get('awesomearchivelist');
+    msg.send(`*awesomebox stats:*
+  Number of info commands: ${awesomeinfo}
+  Number of add commands: ${awesomeadd}
+  Number of delete commands: ${awesomedelete}
+  Number of list commands: ${awesomelist}
+  Number of stat commands: ${awesomestats}
+  Number of archive commands: ${awesomearchive}
+  Number of archive list commands: ${awesomearchivelist}
+  Number of items archived: ${awesomearchived}
+  Current size of archive: ${sizeOfArchive}
+    `);
     robot.logger.info(`${messageUser.name} awesome list`);
   });
 
