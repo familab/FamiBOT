@@ -239,7 +239,7 @@ module.exports = (robot) => {
       `You just got an Awesome Box Message! "${msg.match[2]}" from @${messageUser.name}.`
     );
     msg.send(`Adding "@${name} ${msg.match[2]}" from @${messageUser.name}. Thanks!`);
-    msg.send(`@${messageUser.name} ++ for submitting an awesome box message`);
+    msg.send(`@${messageUser.name}++ for submitting an awesome box message`);
     robot.logger.info(`${messageUser.name} an awesome add ${msg.message.text}`);
   });
 
@@ -288,7 +288,7 @@ module.exports = (robot) => {
 
   robot.hear(/^awesomebox archive$/i, (msg) => {
     const messageUser = msg.message.user;
-    if (messageUser.name === 'craigske'|| messageUser.name === 'Shell') {
+    if (messageUser.name === 'craigske' || messageUser.name === 'Shell') {
       client.zcount('awesome', 0, MAX_REDIS_ORDERED_SET, (_err, numberOfItems) => {
         client.zrange('awesome', 0, MAX_REDIS_ORDERED_SET, (err, results) => {
           if (!results) {
