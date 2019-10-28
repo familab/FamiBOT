@@ -36,6 +36,15 @@ const badger = [
   'badgers? Why always badgers? I love them, but really?'
 ];
 
+const consideration = [
+  '',
+  'After careful consideration, ',
+  'Having thought deeply, ',
+  'You\'re probably right, ',
+  'Ok, I agree ',
+  'Yep, '
+];
+
 function isInt(value) {
   if (isNaN(value)) {
     return false;
@@ -90,7 +99,7 @@ module.exports = (robot) => {
     const rand = Math.round((Math.random() * 60000) + 60000);
     const user = msg.message.user;
     setTimeout(() => {
-      msg.send(`After careful consideration, I think that ${msg.match[1]} ${msg.match[2]} awesome too`);
+      msg.send(`${msg.random(consideration)}I think that ${msg.match[1]} ${msg.match[2]} awesome too`);
     }, rand);
     robot.logger.info(`${user.name} was heard saying ${msg.message.text}`);
   });
